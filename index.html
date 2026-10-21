@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TFSS Rocketry | Turner Fenton Rocketry Association</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js for Physics Telemetry -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#090B10',
+                        cardBg: '#0F131D',
+                        borderMuted: '#1E2638',
+                        brandGold: '#F59E0B',
+                        brandGoldHover: '#D97706',
+                        brandBlue: '#3B82F6',
+                        brandCyan: '#06B6D4',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        tech: ['Chakra Petch', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "radial-gradient(rgba(245, 158, 11, 0.12) 1px, transparent 0)",
+                        'scanline': "linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%)",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #090B10;
+            color: #F3F4F6;
+            background-size: 24px 24px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090B10;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E2638;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #F59E0B;
+        }
+
+        .amber-glow {
+            box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.3);
+        }
+        .cyan-glow {
+            box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.3);
+        }
+
+        /* Infinite Marquee Animation */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: 200%;
+            animation: marquee 25s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+
+        /* Glassmorphism Header */
+        .glass-nav {
+            background: rgba(9, 11, 16, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-gray-200 bg-obsidian selection:bg-brandGold selection:text-black">
+
+    <!-- NAVBAR -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#hero" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-brandGold to-amber-700 flex items-center justify-center text-black font-tech font-bold text-xl shadow-lg transition-transform group-hover:scale-105">
+                    <i class="fa-solid font-bold fa-rocket text-slate-900"></i>
+                </div>
+                <div>
+                    <span class="font-tech font-bold text-xl tracking-wider text-white block leading-none">TFSS <span class="text-brandGold">ROCKETRY</span></span>
+                    <span class="text-[10px] font-mono text-gray-400 tracking-widest uppercase">Turner Fenton Rocketry Association</span>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium font-tech uppercase tracking-wider text-gray-300">
+                <a href="#about" class="hover:text-brandGold transition-colors">About</a>
+                <a href="#rockets" class="hover:text-brandGold transition-colors">Fleet & CAD</a>
+                <a href="#simulator" class="hover:text-brandGold transition-colors flex items-center gap-1.5"><i class="fa-solid fa-flask text-brandCyan"></i> Sim Lab</a>
+                <a href="#sponsors" class="hover:text-brandGold transition-colors">Partners</a>
+                <a href="#contact" class="hover:text-brandGold transition-colors">Contact</a>
+            </nav>
+
+            <!-- Action Button -->
+            <div class="hidden lg:flex items-center space-x-4">
+                <a href="#simulator" class="px-4 py-2 text-xs font-mono font-semibold uppercase tracking-wider rounded-md border border-brandGold text-brandGold hover:bg-brandGold hover:text-black transition-all shadow-sm">
+                    Launch Simulator
+                </a>
+                <a href="pdf/Official TFRA Sponsorship Package.pdf" download class="px-4 py-2 text-xs font-mono font-semibold uppercase tracking-wider rounded-md bg-brandGold text-black hover:bg-brandGoldHover transition-all amber-glow">
+                    Sponsorship PDF <i class="fa-solid fa-download ml-1"></i>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button id="mobileMenuBtn" class="md:hidden text-gray-300 hover:text-white text-2xl focus:outline-none">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden bg-cardBg border-b border-borderMuted px-6 py-4 space-y-3 font-tech uppercase text-sm">
+            <a href="#about" class="block text-gray-300 hover:text-brandGold">About</a>
+            <a href="#rockets" class="block text-gray-300 hover:text-brandGold">Fleet & CAD</a>
+            <a href="#simulator" class="block text-brandCyan hover:text-brandGold">Sim Lab</a>
+            <a href="#sponsors" class="block text-gray-300 hover:text-brandGold">Partners</a>
+            <a href="#contact" class="block text-gray-300 hover:text-brandGold">Contact</a>
+            <div class="pt-2 flex flex-col gap-2">
+                <a href="pdf/Official TFRA Sponsorship Package.pdf" download class="text-center px-4 py-2 text-xs font-mono font-semibold uppercase tracking-wider rounded-md bg-brandGold text-black">
+                    Sponsorship PDF <i class="fa-solid fa-download ml-1"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-20">
+        <!-- HERO SECTION -->
+        <section id="hero" class="relative min-h-[90vh] flex items-center justify-center overflow-hidden border-b border-borderMuted">
+            <!-- Background Visuals -->
+            <div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
+            <div class="absolute -top-40 -left-40 w-96 h-96 bg-brandGold/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-brandCyan/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10 text-center">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brandGold/10 border border-brandGold/30 text-brandGold text-xs font-mono mb-6 uppercase tracking-widest">
+                    <span class="w-2 h-2 rounded-full bg-brandGold animate-ping"></span>
+                    Turner Fenton Secondary School Aerospace Team
+                </div>
+
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-tech font-bold text-white tracking-tight leading-none mb-6">
+                    PIONEERING HIGH-POWER <br class="hidden sm:inline"/>
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-brandGold via-amber-200 to-yellow-500">STUDENT ROCKETRY</span>
+                </h1>
+
+                <p class="max-w-3xl mx-auto text-gray-400 text-base sm:text-lg lg:text-xl font-normal mb-10 leading-relaxed">
+                    We are TFRA — a student-led engineering initiative at Turner Fenton Secondary School designing, simulating, and launching high-powered experimental rockets with advanced avionics, dynamic aerodynamics, and custom telemetry.
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-4 sm:gap-6 font-tech">
+                    <a href="#simulator" class="px-8 py-4 bg-brandGold text-black font-bold uppercase tracking-wider rounded-lg hover:bg-brandGoldHover transition-all amber-glow flex items-center gap-2">
+                        <i class="fa-solid fa-gauge-high"></i> Open Flight Sim
+                    </a>
+                    <a href="#rockets" class="px-8 py-4 bg-cardBg text-white border border-borderMuted hover:border-brandGold font-bold uppercase tracking-wider rounded-lg transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-cubes"></i> Inspect Fleet CAD
+                    </a>
+                </div>
+
+                <!-- KEY METRICS BANNER -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-16 pt-10 border-t border-borderMuted/60">
+                    <div class="p-4 rounded-xl bg-cardBg/60 border border-borderMuted text-center">
+                        <div class="text-3xl font-tech font-bold text-brandGold">40+</div>
+                        <div class="text-xs font-mono text-gray-400 uppercase tracking-wider mt-1">Active Members</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-cardBg/60 border border-borderMuted text-center">
+                        <div class="text-3xl font-tech font-bold text-brandGold">3</div>
+                        <div class="text-xs font-mono text-gray-400 uppercase tracking-wider mt-1">Rockets Built</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-cardBg/60 border border-borderMuted text-center">
+                        <div class="text-3xl font-tech font-bold text-brandGold">1,000+</div>
+                        <div class="text-xs font-mono text-gray-400 uppercase tracking-wider mt-1">Engineering Hours</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-cardBg/60 border border-borderMuted text-center">
+                        <div class="text-3xl font-tech font-bold text-brandGold">100%</div>
+                        <div class="text-xs font-mono text-gray-400 uppercase tracking-wider mt-1">Student Driven</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT / FOUNDERS SECTION -->
+        <section id="about" class="py-24 border-b border-borderMuted relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-xs font-mono text-brandGold uppercase tracking-widest mb-2">// OUR FOUNDATION</h2>
+                    <p class="text-3xl sm:text-4xl font-tech font-bold text-white uppercase">Leadership & Mission</p>
+                    <p class="text-gray-400 mt-4 text-sm sm:text-base">
+                        Founded with a mission to give high school students hands-on exposure to aerospace design, FEA structural stress modeling, propulsion systems, and real-time telemetric hardware.
+                    </p>
+                </div>
+
+                <!-- FOUNDERS' MESSAGES -->
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Divyansh -->
+                    <div class="bg-cardBg p-8 rounded-2xl border border-borderMuted relative overflow-hidden group hover:border-brandGold/50 transition-all">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-brandGold/5 rounded-full blur-2xl"></div>
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-14 h-14 rounded-full bg-brandGold/20 border border-brandGold flex items-center justify-center text-brandGold font-tech text-xl font-bold">
+                                DB
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-tech font-bold text-white">Divyansh Bhardwaj</h3>
+                                <p class="text-xs font-mono text-brandGold uppercase tracking-wider">Co-Founder & President</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 text-sm leading-relaxed italic">
+                            "TFRA was built to bridge the gap between theoretical physics and tangible high-power aerospace engineering. Our goal is to empower every student to design, simulate, build, and test high-altitude systems with industrial rigor."
+                        </p>
+                    </div>
+
+                    <!-- Dhyan -->
+                    <div class="bg-cardBg p-8 rounded-2xl border border-borderMuted relative overflow-hidden group hover:border-brandCyan/50 transition-all">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-brandCyan/5 rounded-full blur-2xl"></div>
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-14 h-14 rounded-full bg-brandCyan/20 border border-brandCyan flex items-center justify-center text-brandCyan font-tech text-xl font-bold">
+                                DP
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-tech font-bold text-white">Dhyan Patel</h3>
+                                <p class="text-xs font-mono text-brandCyan uppercase tracking-wider">Co-Founder & VP Engineering</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 text-sm leading-relaxed italic">
+                            "From aerodynamic CFD passes to PCB soldering for custom telemetry logging, our rockets represent hundreds of hours of collaborative problem-solving. We are pushing the limits of what a high school rocketry team can accomplish."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FLEET & CAD VIEWER SECTION -->
+        <section id="rockets" class="py-24 border-b border-borderMuted bg-obsidian/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-xs font-mono text-brandGold uppercase tracking-widest mb-2">// AEROSPACE HARDWARE</h2>
+                    <p class="text-3xl sm:text-4xl font-tech font-bold text-white uppercase">TFRA Fleet & Interactive Blueprint CAD</p>
+                    <p class="text-gray-400 mt-4 text-sm">Select a rocket vehicle below to inspect hardware specs and dynamic blueprint diagrams.</p>
+                </div>
+
+                <!-- Rocket Selection Tabs -->
+                <div class="flex justify-center gap-3 mb-10 font-tech">
+                    <button onclick="selectRocket('spectre')" id="tab-spectre" class="rocket-tab px-6 py-3 rounded-xl border border-brandGold bg-brandGold text-black font-bold uppercase tracking-wider text-sm transition-all">
+                        Spectre Mk-I
+                    </button>
+                    <button onclick="selectRocket('stallion')" id="tab-stallion" class="rocket-tab px-6 py-3 rounded-xl border border-borderMuted bg-cardBg text-gray-300 hover:border-brandGold font-bold uppercase tracking-wider text-sm transition-all">
+                        Stallion Mk-II
+                    </button>
+                    <button onclick="selectRocket('vanguard')" id="tab-vanguard" class="rocket-tab px-6 py-3 rounded-xl border border-borderMuted bg-cardBg text-gray-300 hover:border-brandGold font-bold uppercase tracking-wider text-sm transition-all">
+                        Vanguard Heavy
+                    </button>
+                </div>
+
+                <!-- Main CAD & Spec Panel -->
+                <div class="grid lg:grid-cols-12 gap-8 items-stretch">
+                    <!-- Left: CAD Viewer SVG Canvas -->
+                    <div class="lg:col-span-7 bg-cardBg rounded-2xl border border-borderMuted p-6 flex flex-col justify-between relative overflow-hidden">
+                        <div class="flex items-center justify-between border-b border-borderMuted pb-4 mb-4">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-brandGold"></span>
+                                <span id="cad-title" class="font-tech font-bold text-white uppercase">SPECTRE MK-I - CAD SCHEMATIC</span>
+                            </div>
+                            <span class="text-xs font-mono text-brandGold">SCALE: 1:10 SCHEMATIC</span>
+                        </div>
+
+                        <!-- Interactive SVG Blueprint Canvas -->
+                        <div id="cad-canvas-container" class="relative w-full h-[380px] bg-obsidian rounded-xl border border-borderMuted/80 flex items-center justify-center p-4">
+                            <svg id="cad-svg" viewBox="0 0 600 240" class="w-full h-full text-brandGold transition-all duration-300">
+                                <!-- Dynamic Rendered Content -->
+                            </svg>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-borderMuted/60 flex justify-between items-center text-xs font-mono text-gray-400">
+                            <span><i class="fa-solid fa-microchip text-brandGold"></i> Avionics: Dual Deploy Altimeter</span>
+                            <span>Recovery: Dual Stage Nylon Parachute</span>
+                        </div>
+                    </div>
+
+                    <!-- Right: Technical Specifications -->
+                    <div class="lg:col-span-5 bg-cardBg rounded-2xl border border-borderMuted p-6 flex flex-col justify-between">
+                        <div>
+                            <h3 id="spec-name" class="text-2xl font-tech font-bold text-white uppercase mb-1">SPECTRE MK-I</h3>
+                            <p id="spec-class" class="text-xs font-mono text-brandGold uppercase mb-6">Class G Motor High-Altitude Demonstrator</p>
+                            
+                            <div class="space-y-4 font-mono text-sm">
+                                <div class="flex justify-between p-3 rounded-lg bg-obsidian/60 border border-borderMuted">
+                                    <span class="text-gray-400">Total Length:</span>
+                                    <span id="spec-length" class="text-white font-bold">1,250 mm</span>
+                                </div>
+                                <div class="flex justify-between p-3 rounded-lg bg-obsidian/60 border border-borderMuted">
+                                    <span class="text-gray-400">Airframe Diameter:</span>
+                                    <span id="spec-diameter" class="text-white font-bold">75 mm</span>
+                                </div>
+                                <div class="flex justify-between p-3 rounded-lg bg-obsidian/60 border border-borderMuted">
+                                    <span class="text-gray-400">Wet Mass:</span>
+                                    <span id="spec-mass" class="text-white font-bold">2.45 kg</span>
+                                </div>
+                                <div class="flex justify-between p-3 rounded-lg bg-obsidian/60 border border-borderMuted">
+                                    <span class="text-gray-400">Target Apogee:</span>
+                                    <span id="spec-apogee" class="text-brandGold font-bold">1,200 m (3,937 ft)</span>
+                                </div>
+                                <div class="flex justify-between p-3 rounded-lg bg-obsidian/60 border border-borderMuted">
+                                    <span class="text-gray-400">Primary Motor:</span>
+                                    <span id="spec-motor" class="text-white font-bold">Cesaroni G79W</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-borderMuted">
+                            <p id="spec-desc" class="text-xs text-gray-400 leading-relaxed">
+                                Spectre Mk-I serves as TFRA's primary telemetry testbed, utilizing 3D-printed PETG fin assemblies and an onboard ESP32 dual-barometer data logging payload.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2D INTERACTIVE LAUNCH SIMULATOR LAB -->
+        <section id="simulator" class="py-24 border-b border-borderMuted bg-obsidian">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <h2 class="text-xs font-mono text-brandCyan uppercase tracking-widest mb-2">// SIMULATION & PHYSICS LAB</h2>
+                    <p class="text-3xl sm:text-4xl font-tech font-bold text-white uppercase">2D Interactive Flight Telemetry Simulator</p>
+                    <p class="text-gray-400 mt-4 text-sm">Adjust environmental parameters and vehicle dynamics in real-time to compute vertical trajectory, drag force, parachute deploy, and apogee dynamics.</p>
+                </div>
+
+                <div class="grid lg:grid-cols-12 gap-6">
+                    <!-- Left Column: Controls (4 cols) -->
+                    <div class="lg:col-span-4 bg-cardBg rounded-2xl border border-borderMuted p-6 space-y-5">
+                        <div class="flex items-center justify-between border-b border-borderMuted pb-3">
+                            <h3 class="font-tech font-bold text-white uppercase flex items-center gap-2">
+                                <i class="fa-solid fa-sliders text-brandGold"></i> Flight Parameters
+                            </h3>
+                            <button onclick="loadPreset('spectre')" class="text-xs font-mono text-brandCyan hover:underline">Reset Default</button>
+                        </div>
+
+                        <!-- Presets Selector -->
+                        <div>
+                            <label class="block text-xs font-mono text-gray-400 mb-2 uppercase">Load Vehicle Preset</label>
+                            <div class="grid grid-cols-3 gap-2 font-mono text-xs">
+                                <button onclick="loadPreset('spectre')" class="py-2 rounded bg-obsidian border border-borderMuted hover:border-brandGold text-gray-300">Spectre</button>
+                                <button onclick="loadPreset('stallion')" class="py-2 rounded bg-obsidian border border-borderMuted hover:border-brandGold text-gray-300">Stallion</button>
+                                <button onclick="loadPreset('vanguard')" class="py-2 rounded bg-obsidian border border-borderMuted hover:border-brandGold text-gray-300">Vanguard</button>
+                            </div>
+                        </div>
+
+                        <!-- Inputs -->
+                        <div class="space-y-4 font-mono text-xs">
+                            <div>
+                                <div class="flex justify-between text-gray-300 mb-1">
+                                    <span>Dry Rocket Mass (kg):</span>
+                                    <span id="val-mass" class="text-brandGold">1.8</span>
+                                </div>
+                                <input type="range" id="input-mass" min="0.5" max="10.0" step="0.1" value="1.8" class="w-full accent-brandGold bg-obsidian rounded">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-gray-300 mb-1">
+                                    <span>Motor Impulse / Thrust (N):</span>
+                                    <span id="val-thrust" class="text-brandGold">280</span>
+                                </div>
+                                <input type="range" id="input-thrust" min="50" max="1500" step="10" value="280" class="w-full accent-brandGold bg-obsidian rounded">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-gray-300 mb-1">
+                                    <span>Burn Duration (sec):</span>
+                                    <span id="val-burn" class="text-brandGold">2.2</span>
+                                </div>
+                                <input type="range" id="input-burn" min="0.5" max="6.0" step="0.1" value="2.2" class="w-full accent-brandGold bg-obsidian rounded">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-gray-300 mb-1">
+                                    <span>Cross Wind Speed (m/s):</span>
+                                    <span id="val-wind" class="text-brandCyan">4.0</span>
+                                </div>
+                                <input type="range" id="input-wind" min="0" max="25" step="0.5" value="4.0" class="w-full accent-brandCyan bg-obsidian rounded">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-gray-300 mb-1">
+                                    <span>Drag Coeff (Cd):</span>
+                                    <span id="val-drag" class="text-brandGold">0.45</span>
+                                </div>
+                                <input type="range" id="input-drag" min="0.1" max="1.0" step="0.05" value="0.45" class="w-full accent-brandGold bg-obsidian rounded">
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="pt-2 flex gap-3 font-tech">
+                            <button id="btn-launch" onclick="toggleSim()" class="flex-1 py-3 bg-brandGold text-black font-bold uppercase rounded-lg hover:bg-brandGoldHover transition-all amber-glow text-center">
+                                <i class="fa-solid fa-play"></i> LAUNCH SIM
+                            </button>
+                            <button onclick="resetSim()" class="px-4 py-3 bg-obsidian border border-borderMuted text-gray-300 rounded-lg hover:border-gray-500">
+                                <i class="fa-solid fa-rotate-left"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Middle Column: Visual Canvas (5 cols) -->
+                    <div class="lg:col-span-5 bg-cardBg rounded-2xl border border-borderMuted p-4 flex flex-col justify-between relative overflow-hidden">
+                        <div class="flex items-center justify-between font-mono text-xs text-gray-400 mb-2">
+                            <span><i class="fa-solid fa-eye text-brandGold"></i> LIVE VISUAL FEED</span>
+                            <span id="sim-status" class="text-brandGold font-bold">STATUS: READY</span>
+                        </div>
+
+                        <div class="relative w-full h-[400px] bg-obsidian rounded-xl border border-borderMuted/80 overflow-hidden flex items-end justify-center">
+                            <!-- Sky Canvas -->
+                            <canvas id="simCanvas" class="w-full h-full block"></canvas>
+                        </div>
+
+                        <!-- Live Telemetry Readout Cards -->
+                        <div class="grid grid-cols-3 gap-2 mt-4 font-mono text-xs">
+                            <div class="p-2 bg-obsidian rounded border border-borderMuted text-center">
+                                <div class="text-gray-400">ALTITUDE</div>
+                                <div id="read-alt" class="text-brandGold font-bold text-sm">0 m</div>
+                            </div>
+                            <div class="p-2 bg-obsidian rounded border border-borderMuted text-center">
+                                <div class="text-gray-400">VELOCITY</div>
+                                <div id="read-vel" class="text-white font-bold text-sm">0 m/s</div>
+                            </div>
+                            <div class="p-2 bg-obsidian rounded border border-borderMuted text-center">
+                                <div class="text-gray-400">MAX APOGEE</div>
+                                <div id="read-apogee" class="text-brandCyan font-bold text-sm">0 m</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Real-time Telemetry Charts (3 cols) -->
+                    <div class="lg:col-span-3 bg-cardBg rounded-2xl border border-borderMuted p-4 flex flex-col justify-between space-y-4">
+                        <div class="font-tech font-bold text-white uppercase text-sm border-b border-borderMuted pb-2">
+                            <i class="fa-solid fa-chart-line text-brandCyan"></i> Real-Time Telemetry
+                        </div>
+
+                        <!-- Chart Canvas Container -->
+                        <div class="flex-1 min-h-[180px] bg-obsidian p-2 rounded-xl border border-borderMuted/60">
+                            <canvas id="telemetryChart"></canvas>
+                        </div>
+
+                        <div class="text-[11px] font-mono text-gray-400 bg-obsidian/70 p-3 rounded-lg border border-borderMuted/60 space-y-1">
+                            <div class="flex justify-between">
+                                <span>Deployment:</span>
+                                <span id="read-deploy" class="text-gray-300">Armed</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Peak Acceleration:</span>
+                                <span id="read-accel" class="text-gray-300">0.0 G</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Flight Time:</span>
+                                <span id="read-time" class="text-brandGold">0.0 s</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PARTNERS & SPONSORS MARQUEE -->
+        <section id="sponsors" class="py-20 border-b border-borderMuted bg-obsidian/40 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 text-center">
+                <h2 class="text-xs font-mono text-brandGold uppercase tracking-widest mb-2">// SPONSORS & AFFILIATIONS</h2>
+                <p class="text-2xl font-tech font-bold text-white uppercase">Supported By Industry & Educational Leaders</p>
+            </div>
+
+            <!-- Continuous Marquee -->
+            <div class="relative w-full overflow-hidden py-4 border-y border-borderMuted/50 bg-cardBg/40">
+                <div class="animate-marquee flex items-center space-x-12 whitespace-nowrap">
+                    <!-- Sponsor Tags -->
+                    <span class="font-tech font-bold text-lg text-gray-300 hover:text-brandGold transition-colors"><i class="fa-solid fa-school text-brandGold mr-2"></i> Peel District School Board (PDSB)</span>
+                    <span class="font-tech font-bold text-lg text-gray-300 hover:text-brandGold transition-colors"><i class="fa-solid fa-wind text-brandCyan mr-2"></i> SimScale CFD</span>
+                    <span class="font-tech font-bold text-lg text-gray-300 hover:text-brandGold transition-colors"><i class="fa-solid fa-cube text-brandGold mr-2"></i> Onshape CAD</span>
+                    <span class="font-tech font-bold text-lg text-gray-300 hover:text-brandGold transition-colors"><i class="fa-solid fa-city text-amber-500 mr-2"></i> Brampton Innovation District</span>
+                    <span class="font-tech font-bold text-lg text-gray-300 hover:text-brandGold transition-colors"><i class="fa-solid fa-location-dot text-brandGold mr-2"></i> City of Brampton</span>
+                    <span class="font-tech font-bold text-lg text-gray-300 hover:text-brandGold transition-colors"><i class="fa-solid fa-shuttle-space text-brandCyan mr-2"></i> NordSpace</span>
+                    <span class="font-tech font-bold text-lg text-gray-300 hover:text-brandGold transition-colors"><i class="fa-solid fa-crosshairs text-brandGold mr-2"></i> Arbalest Aerospace</span>
+
+                    <!-- Duplicate Set for Seamless Loop -->
+                    <span class="font-tech font-bold text-lg text-gray-300 hover:text-brandGold transition-colors"><i class="fa-solid fa-school text-brandGold mr-2"></i> Peel District School Board (PDSB)</span>
+                    <span class="font-tech font-bold text-lg text-gray-300 hover:text-brandGold transition-colors"><i class="fa-solid fa-wind text-brandCyan mr-2"></i> SimScale CFD</span>
+                    <span class="font-tech font-bold text-lg text-gray-300 hover:text-brandGold transition-colors"><i class="fa-solid fa-cube text-brandGold mr-2"></i> Onshape CAD</span>
+                    <span class="font-tech font-bold text-lg text-gray-300 hover:text-brandGold transition-colors"><i class="fa-solid fa-city text-amber-500 mr-2"></i> Brampton Innovation District</span>
+                    <span class="font-tech font-bold text-lg text-gray-300 hover:text-brandGold transition-colors"><i class="fa-solid fa-location-dot text-brandGold mr-2"></i> City of Brampton</span>
+                    <span class="font-tech font-bold text-lg text-gray-300 hover:text-brandGold transition-colors"><i class="fa-solid fa-shuttle-space text-brandCyan mr-2"></i> NordSpace</span>
+                    <span class="font-tech font-bold text-lg text-gray-300 hover:text-brandGold transition-colors"><i class="fa-solid fa-crosshairs text-brandGold mr-2"></i> Arbalest Aerospace</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- CLEAN MODERN CONTACT FORM (DIRECT WEB3FORMS TO TFSS.ROCKETRY@GMAIL.COM) -->
+        <section id="contact" class="py-24 border-b border-borderMuted relative">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-xs font-mono text-brandGold uppercase tracking-widest mb-2">// DIRECT COMMUNICATIONS</h2>
+                    <p class="text-3xl sm:text-4xl font-tech font-bold text-white uppercase">Get In Touch With TFRA</p>
+                    <p class="text-gray-400 mt-3 text-sm">Whether you are interested in sponsorship, mentorship, or joining our aerospace team, send us a direct message below.</p>
+                </div>
+
+                <div class="bg-cardBg p-8 sm:p-10 rounded-2xl border border-borderMuted shadow-2xl relative overflow-hidden">
+                    <form action="https://api.web3forms.com/submit" method="POST" class="space-y-6">
+                        <!-- Hidden Web3Forms Key pointing to tfss.rocketry@gmail.com -->
+                        <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY_HERE">
+                        <input type="hidden" name="subject" value="New Inquiry from TFSS Rocketry Website">
+                        <input type="hidden" name="to_email" value="tfss.rocketry@gmail.com">
+
+                        <div class="grid md:grid-cols-2 gap-6 font-mono text-xs">
+                            <div>
+                                <label class="block text-gray-300 mb-2 uppercase">Your Name *</label>
+                                <input type="text" name="name" required placeholder="e.g. Alex Mercer" class="w-full bg-obsidian border border-borderMuted rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brandGold transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-gray-300 mb-2 uppercase">Your Email *</label>
+                                <input type="email" name="email" required placeholder="e.g. alex@domain.com" class="w-full bg-obsidian border border-borderMuted rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brandGold transition-colors">
+                            </div>
+                        </div>
+
+                        <div class="font-mono text-xs">
+                            <label class="block text-gray-300 mb-2 uppercase">Inquiry Type</label>
+                            <select name="inquiry_type" class="w-full bg-obsidian border border-borderMuted rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brandGold transition-colors">
+                                <option value="Sponsorship">Corporate Sponsorship Inquiry</option>
+                                <option value="Student Join">Student Membership / Join Team</option>
+                                <option value="Mentorship">Engineering Mentorship & Advisory</option>
+                                <option value="General">General Questions</option>
+                            </select>
+                        </div>
+
+                        <div class="font-mono text-xs">
+                            <label class="block text-gray-300 mb-2 uppercase">Message *</label>
+                            <textarea name="message" rows="5" required placeholder="Type your message or proposal here..." class="w-full bg-obsidian border border-borderMuted rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brandGold transition-colors"></textarea>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+                            <a href="pdf/Official TFRA Sponsorship Package.pdf" download class="text-xs font-mono text-brandGold hover:underline flex items-center gap-1">
+                                <i class="fa-solid fa-file-pdf"></i> Download Official Sponsorship Prospectus
+                            </a>
+
+                            <button type="submit" class="w-full sm:w-auto px-8 py-4 bg-brandGold text-black font-tech font-bold uppercase tracking-wider rounded-lg hover:bg-brandGoldHover transition-all amber-glow flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i> Transmit Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-obsidian border-t border-borderMuted py-12 font-mono text-xs text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded bg-brandGold flex items-center justify-center text-black font-bold font-tech">
+                    <i class="fa-solid fa-rocket"></i>
+                </div>
+                <div>
+                    <span class="font-tech font-bold text-white text-sm block">TFSS ROCKETRY</span>
+                    <span>Turner Fenton Secondary School, Brampton ON</span>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-6 text-sm">
+                <a href="mailto:tfss.rocketry@gmail.com" class="hover:text-brandGold transition-colors"><i class="fa-solid fa-envelope mr-1"></i> tfss.rocketry@gmail.com</a>
+                <a href="https://github.com" target="_blank" class="hover:text-brandGold transition-colors"><i class="fa-brands fa-github"></i></a>
+                <a href="https://instagram.com" target="_blank" class="hover:text-brandGold transition-colors"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+
+            <div>
+                &copy; 2026 TFRA - Turner Fenton Rocketry Association.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT: LOGIC & PHYSICS SIMULATION ENGINE -->
+    <script>
+        // --- MOBILE MENU TOGGLE ---
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // --- ROCKET FLEET & CAD SVG RENDERER DATA ---
+        const rocketSpecs = {
+            spectre: {
+                name: "SPECTRE MK-I",
+                class: "Class G Motor High-Altitude Demonstrator",
+                length: "1,250 mm",
+                diameter: "75 mm",
+                mass: "2.45 kg",
+                apogee: "1,200 m (3,937 ft)",
+                motor: "Cesaroni G79W",
+                desc: "Spectre Mk-I serves as TFRA's primary telemetry testbed, utilizing 3D-printed PETG fin assemblies and an onboard ESP32 dual-barometer data logging payload.",
+                svg: `
+                    <!-- Spectre Schematic -->
+                    <g stroke="#F59E0B" stroke-width="2" fill="none">
+                        <!-- Nosecone -->
+                        <path d="M 50,120 Q 150,80 200,80 L 200,160 Q 150,160 50,120 Z" fill="rgba(245, 158, 11, 0.1)"/>
+                        <!-- Payload Section -->
+                        <rect x="200" y="80" width="120" height="80" fill="rgba(245, 158, 11, 0.05)"/>
+                        <!-- Avionics Bay -->
+                        <rect x="320" y="80" width="80" height="80" stroke-dasharray="4" fill="rgba(6, 182, 212, 0.1)"/>
+                        <text x="335" y="125" fill="#06B6D4" font-size="10" font-family="monospace">AVIONICS</text>
+                        <!-- Main Body Tube -->
+                        <rect x="400" y="80" width="120" height="80" fill="rgba(245, 158, 11, 0.05)"/>
+                        <!-- Fins -->
+                        <path d="M 460,80 L 520,40 L 520,80 Z" fill="rgba(245, 158, 11, 0.2)"/>
+                        <path d="M 460,160 L 520,200 L 520,160 Z" fill="rgba(245, 158, 11, 0.2)"/>
+                        <!-- Motor Nozzle -->
+                        <polygon points="520,95 550,105 550,135 520,145" fill="rgba(245, 158, 11, 0.3)"/>
+                    </g>
+                `
+            },
+            stallion: {
+                name: "STALLION MK-II",
+                class: "Dual-Deploy Experimental Supersonic Airframe",
+                length: "1,680 mm",
+                diameter: "98 mm",
+                mass: "4.10 kg",
+                apogee: "2,450 m (8,038 ft)",
+                motor: "Cesaroni H153",
+                desc: "Stallion Mk-II incorporates carbon-fiber reinforced fiberglass tubes, active airbrakes simulation module, and redundancy GPS telemetric telemetry.",
+                svg: `
+                    <!-- Stallion Schematic -->
+                    <g stroke="#06B6D4" stroke-width="2" fill="none">
+                        <!-- Ogive Nosecone -->
+                        <path d="M 40,120 Q 160,70 230,70 L 230,170 Q 160,170 40,120 Z" fill="rgba(6, 182, 212, 0.1)"/>
+                        <!-- Body Tube 1 -->
+                        <rect x="230" y="70" width="140" height="100" fill="rgba(6, 182, 212, 0.05)"/>
+                        <!-- Airbrakes Section -->
+                        <rect x="370" y="70" width="50" height="100" stroke-dasharray="3" fill="rgba(245, 158, 11, 0.15)"/>
+                        <text x="375" y="125" fill="#F59E0B" font-size="9" font-family="monospace">AIRBRAKE</text>
+                        <!-- Body Tube 2 -->
+                        <rect x="420" y="70" width="110" height="100" fill="rgba(6, 182, 212, 0.05)"/>
+                        <!-- Swept Fins -->
+                        <path d="M 450,70 L 530,30 L 530,70 Z" fill="rgba(6, 182, 212, 0.2)"/>
+                        <path d="M 450,170 L 530,210 L 530,170 Z" fill="rgba(6, 182, 212, 0.2)"/>
+                        <!-- Motor Nozzle -->
+                        <polygon points="530,85 565,95 565,145 530,155" fill="rgba(6, 182, 212, 0.3)"/>
+                    </g>
+                `
+            },
+            vanguard: {
+                name: "VANGUARD HEAVY",
+                class: "Multi-Stage High Payload Platform",
+                length: "2,150 mm",
+                diameter: "120 mm",
+                mass: "7.80 kg",
+                apogee: "3,800 m (12,467 ft)",
+                motor: "Dual Cesaroni I212",
+                desc: "Vanguard is TFRA's heavy-lift flagship carrying scientific sensors, atmospheric sampling canisters, and dynamic camera pods.",
+                svg: `
+                    <!-- Vanguard Schematic -->
+                    <g stroke="#3B82F6" stroke-width="2" fill="none">
+                        <!-- Heavy Nosecone -->
+                        <path d="M 30,120 Q 140,60 220,60 L 220,180 Q 140,180 30,120 Z" fill="rgba(59, 130, 246, 0.1)"/>
+                        <!-- Payload Bay -->
+                        <rect x="220" y="60" width="150" height="120" fill="rgba(59, 130, 246, 0.05)"/>
+                        <text x="255" y="125" fill="#3B82F6" font-size="10" font-family="monospace">PAYLOAD BAY</text>
+                        <!-- Booster Stage -->
+                        <rect x="370" y="60" width="160" height="120" fill="rgba(59, 130, 246, 0.08)"/>
+                        <!-- Trapezoidal Fins -->
+                        <path d="M 420,60 L 480,20 L 530,20 L 530,60 Z" fill="rgba(59, 130, 246, 0.25)"/>
+                        <path d="M 420,180 L 480,220 L 530,220 L 530,180 Z" fill="rgba(59, 130, 246, 0.25)"/>
+                        <!-- Dual Nozzle -->
+                        <polygon points="530,75 570,85 570,115 530,120" fill="rgba(59, 130, 246, 0.4)"/>
+                        <polygon points="530,120 570,125 570,155 530,165" fill="rgba(59, 130, 246, 0.4)"/>
+                    </g>
+                `
+            }
+        };
+
+        function selectRocket(key) {
+            const data = rocketSpecs[key];
+            if (!data) return;
+
+            // Highlight Tab Buttons
+            document.querySelectorAll('.rocket-tab').forEach(btn => {
+                btn.classList.remove('bg-brandGold', 'text-black', 'border-brandGold');
+                btn.classList.add('bg-cardBg', 'text-gray-300', 'border-borderMuted');
+            });
+            const activeBtn = document.getElementById(`tab-${key}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-cardBg', 'text-gray-300', 'border-borderMuted');
+                activeBtn.classList.add('bg-brandGold', 'text-black', 'border-brandGold');
+            }
+
+            // Update Specs Text
+            document.getElementById('cad-title').innerText = `${data.name} - CAD SCHEMATIC`;
+            document.getElementById('spec-name').innerText = data.name;
+            document.getElementById('spec-class').innerText = data.class;
+            document.getElementById('spec-length').innerText = data.length;
+            document.getElementById('spec-diameter').innerText = data.diameter;
+            document.getElementById('spec-mass').innerText = data.mass;
+            document.getElementById('spec-apogee').innerText = data.apogee;
+            document.getElementById('spec-motor').innerText = data.motor;
+            document.getElementById('spec-desc').innerText = data.desc;
+
+            // Update SVG Visual
+            document.getElementById('cad-svg').innerHTML = data.svg;
+        }
+
+        // Initialize with Spectre
+        selectRocket('spectre');
+
+
+        // --- 2D LAUNCH SIMULATOR PHYSICS & TELEMETRY ENGINE ---
+        let simRunning = false;
+        let simAnimFrame = null;
+
+        // Physics State Variables
+        let posY = 0;          // meters altitude
+        let velY = 0;          // m/s vertical speed
+        let posX = 0;          // meters horizontal drift
+        let velX = 0;          // m/s horizontal drift speed
+        let simTime = 0;       // seconds
+        let maxApogee = 0;
+        let maxAccel = 0;
+        let parachuteDeployed = false;
+
+        // Input Bindings
+        const inputMass = document.getElementById('input-mass');
+        const inputThrust = document.getElementById('input-thrust');
+        const inputBurn = document.getElementById('input-burn');
+        const inputWind = document.getElementById('input-wind');
+        const inputDrag = document.getElementById('input-drag');
+
+        // Dynamic Display Labels
+        function updateInputLabels() {
+            document.getElementById('val-mass').innerText = inputMass.value;
+            document.getElementById('val-thrust').innerText = inputThrust.value;
+            document.getElementById('val-burn').innerText = inputBurn.value;
+            document.getElementById('val-wind').innerText = inputWind.value;
+            document.getElementById('val-drag').innerText = inputDrag.value;
+        }
+
+        [inputMass, inputThrust, inputBurn, inputWind, inputDrag].forEach(inp => {
+            inp.addEventListener('input', updateInputLabels);
+        });
+
+        function loadPreset(presetKey) {
+            if (presetKey === 'spectre') {
+                inputMass.value = 1.8; inputThrust.value = 280; inputBurn.value = 2.2; inputWind.value = 4.0; inputDrag.value = 0.45;
+            } else if (presetKey === 'stallion') {
+                inputMass.value = 3.5; inputThrust.value = 580; inputBurn.value = 3.1; inputWind.value = 6.5; inputDrag.value = 0.38;
+            } else if (presetKey === 'vanguard') {
+                inputMass.value = 6.8; inputThrust.value = 1100; inputBurn.value = 4.5; inputWind.value = 8.0; inputDrag.value = 0.50;
+            }
+            updateInputLabels();
+            resetSim();
+        }
+
+        // Chart.js Telemetry Initialization
+        const ctxChart = document.getElementById('telemetryChart').getContext('2d');
+        const telemetryChart = new Chart(ctxChart, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: 'Altitude (m)',
+                        data: [],
+                        borderColor: '#F59E0B',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.2,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Velocity (m/s)',
+                        data: [],
+                        borderColor: '#06B6D4',
+                        borderWidth: 1.5,
+                        borderDash: [3, 3],
+                        tension: 0.2,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                scales: {
+                    x: { ticks: { color: '#6B7280', font: { size: 9 } }, grid: { color: '#1E2638' } },
+                    y: { position: 'left', ticks: { color: '#F59E0B', font: { size: 9 } }, grid: { color: '#1E2638' } },
+                    y1: { position: 'right', ticks: { color: '#06B6D4', font: { size: 9 } }, grid: { drawOnChartArea: false } }
+                },
+                plugins: {
+                    legend: { labels: { color: '#9CA3AF', font: { size: 10 } } }
+                }
+            }
+        });
+
+        // Visual Canvas Setup
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function toggleSim() {
+            if (simRunning) {
+                pauseSim();
+            } else {
+                startSim();
+            }
+        }
+
+        function startSim() {
+            simRunning = true;
+            document.getElementById('btn-launch').innerHTML = `<i class="fa-solid fa-pause"></i> PAUSE SIM`;
+            document.getElementById('sim-status').innerText = "STATUS: FLIGHT ACTIVE";
+            document.getElementById('sim-status').className = "text-brandGold font-bold animate-pulse";
+            lastTimestamp = performance.now();
+            requestAnimationFrame(simStep);
+        }
+
+        function pauseSim() {
+            simRunning = false;
+            document.getElementById('btn-launch').innerHTML = `<i class="fa-solid fa-play"></i> RESUME SIM`;
+            document.getElementById('sim-status').innerText = "STATUS: PAUSED";
+            document.getElementById('sim-status').className = "text-amber-400 font-bold";
+            if (simAnimFrame) cancelAnimationFrame(simAnimFrame);
+        }
+
+        function resetSim() {
+            pauseSim();
+            document.getElementById('btn-launch').innerHTML = `<i class="fa-solid fa-play"></i> LAUNCH SIM`;
+            document.getElementById('sim-status').innerText = "STATUS: READY";
+            document.getElementById('sim-status').className = "text-brandGold font-bold";
+
+            posY = 0;
+            velY = 0;
+            posX = 0;
+            velX = 0;
+            simTime = 0;
+            maxApogee = 0;
+            maxAccel = 0;
+            parachuteDeployed = false;
+
+            telemetryChart.data.labels = [];
+            telemetryChart.data.datasets[0].data = [];
+            telemetryChart.data.datasets[1].data = [];
+            telemetryChart.update();
+
+            updateTelemetryUI(0, 0, 0, 0, "Armed");
+            drawVisuals();
+        }
+
+        let lastTimestamp = 0;
+
+        function simStep(timestamp) {
+            if (!simRunning) return;
+
+            const dt = Math.min((timestamp - lastTimestamp) / 1000, 0.05); // cap delta time
+            lastTimestamp = timestamp;
+
+            simTime += dt;
+
+            // Physics Calculations
+            const mass = parseFloat(inputMass.value);
+            const thrust = parseFloat(inputThrust.value);
+            const burnTime = parseFloat(inputBurn.value);
+            const wind = parseFloat(inputWind.value);
+            const cd = parseFloat(inputDrag.value);
+
+            const g = 9.81; // m/s^2
+            const airDensity = 1.225;
+            const area = 0.005; // rocket cross section m^2
+
+            // Thrust Force
+            let currentThrust = 0;
+            if (simTime <= burnTime) {
+                currentThrust = thrust;
+            }
+
+            // Parachute Check (Deploy at apogee descending)
+            if (velY < -0.5 && !parachuteDeployed && posY > 20) {
+                parachuteDeployed = true;
+            }
+
+            // Drag Force
+            const effectiveCd = parachuteDeployed ? 1.4 : cd;
+            const effectiveArea = parachuteDeployed ? 0.25 : area;
+            const dragForceY = 0.5 * airDensity * (velY * velY) * effectiveCd * effectiveArea * (velY > 0 ? -1 : 1);
+
+            // Net Vertical Acceleration
+            const netForceY = currentThrust + dragForceY - (mass * g);
+            const accelY = netForceY / mass;
+
+            // Track Max Acceleration
+            const gForce = (accelY + g) / g;
+            if (gForce > maxAccel) maxAccel = gForce;
+
+            // Update Velocity & Position
+            velY += accelY * dt;
+            posY += velY * dt;
+
+            // Horizontal Drift due to wind
+            velX = wind * 0.4;
+            posX += velX * dt;
+
+            // Peak Altitude
+            if (posY > maxApogee) maxApogee = posY;
+
+            // Ground Collision
+            if (posY <= 0) {
+                posY = 0;
+                velY = 0;
+                simRunning = false;
+                document.getElementById('sim-status').innerText = "STATUS: TOUCHDOWN COMPLETE";
+                document.getElementById('sim-status').className = "text-brandCyan font-bold";
+                document.getElementById('btn-launch').innerHTML = `<i class="fa-solid fa-rotate-left"></i> RE-LAUNCH`;
+            }
+
+            // Chart Updates every 0.1s
+            if (Math.floor(simTime * 10) % 2 === 0) {
+                telemetryChart.data.labels.push(simTime.toFixed(1));
+                telemetryChart.data.datasets[0].data.push(Math.round(posY));
+                telemetryChart.data.datasets[1].data.push(Math.round(velY));
+                if (telemetryChart.data.labels.length > 50) {
+                    telemetryChart.data.labels.shift();
+                    telemetryChart.data.datasets[0].data.shift();
+                    telemetryChart.data.datasets[1].data.shift();
+                }
+                telemetryChart.update('none');
+            }
+
+            updateTelemetryUI(posY, velY, maxApogee, maxAccel, parachuteDeployed ? "DEPLOYED (CHUTE)" : (simTime <= burnTime ? "POWERED ASCENT" : "COASTING"));
+            drawVisuals();
+
+            if (simRunning) {
+                simAnimFrame = requestAnimationFrame(simStep);
+            }
+        }
+
+        function updateTelemetryUI(alt, vel, apogee, accel, statusStr) {
+            document.getElementById('read-alt').innerText = `${Math.round(alt)} m`;
+            document.getElementById('read-vel').innerText = `${Math.round(vel)} m/s`;
+            document.getElementById('read-apogee').innerText = `${Math.round(apogee)} m`;
+            document.getElementById('read-accel').innerText = `${accel.toFixed(1)} G`;
+            document.getElementById('read-time').innerText = `${simTime.toFixed(1)} s`;
+            document.getElementById('read-deploy').innerText = statusStr;
+        }
+
+        function drawVisuals() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Ground Line
+            ctx.fillStyle = '#1E2638';
+            ctx.fillRect(0, canvas.height - 20, canvas.width, 20);
+
+            // Grid Lines
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.lineWidth = 1;
+            for (let y = canvas.height - 20; y > 0; y -= 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            // Calculate Visual Rocket Position on Canvas
+            const scale = 0.25; // meters to canvas pixels ratio
+            const startX = canvas.width / 2;
+            const startY = canvas.height - 35;
+
+            const drawX = startX + (posX * 2);
+            const drawY = startY - (posY * scale);
+
+            // Draw Exhaust Flame during Powered Ascent
+            if (simRunning && simTime <= parseFloat(inputBurn.value) && posY > 0) {
+                ctx.beginPath();
+                ctx.fillStyle = '#F59E0B';
+                ctx.moveTo(drawX - 4, drawY + 12);
+                ctx.lineTo(drawX + 4, drawY + 12);
+                ctx.lineTo(drawX, drawY + 28 + Math.random() * 10);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            // Draw Parachute if deployed
+            if (parachuteDeployed && posY > 5) {
+                ctx.beginPath();
+                ctx.strokeStyle = '#06B6D4';
+                ctx.lineWidth = 1.5;
+                ctx.moveTo(drawX - 12, drawY - 10);
+                ctx.lineTo(drawX, drawY);
+                ctx.moveTo(drawX + 12, drawY - 10);
+                ctx.lineTo(drawX, drawY);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.fillStyle = 'rgba(6, 182, 212, 0.6)';
+                ctx.arc(drawX, drawY - 14, 16, Math.PI, 0, false);
+                ctx.fill();
+            }
+
+            // Draw Rocket Body Icon
+            ctx.fillStyle = '#FFFFFF';
+            ctx.beginPath();
+            ctx.moveTo(drawX, drawY - 12);
+            ctx.lineTo(drawX + 5, drawY + 8);
+            ctx.lineTo(drawX - 5, drawY + 8);
+            ctx.closePath();
+            ctx.fill();
+
+            // Rocket Fins
+            ctx.fillStyle = '#F59E0B';
+            ctx.fillRect(drawX - 7, drawY + 4, 3, 6);
+            ctx.fillRect(drawX + 4, drawY + 4, 3, 6);
+        }
+
+        // Initial Canvas Render
+        drawVisuals();
+    </script>
+</body>
+</html>
